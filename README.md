@@ -1,40 +1,44 @@
-# Tsukihime -A piece of blue glass moon- Script (Tsukihimates Parser)
+# Tsukihime -A piece of blue glass moon- Script (HuneX Engine Parser)
 
-Kumpulan skrip hasil parser dari proyek lokalisasi **Tsukihimates** untuk game **Tsukihime -A piece of blue glass moon- (TsukiRe)**. Repositori ini berisi data teks dan instruksi game yang telah dikonversi ke format yang lebih mudah dibaca untuk kebutuhan modding, riset, atau fan-translation ke bahasa lain.
-
----
-
-## Tentang Proyek
-Data yang ada di sini merupakan hasil ekstraksi dan parsing teknis dari aset asli game menggunakan toolset yang dikembangkan oleh tim **Tsukihimates**. Proyek ini bertujuan untuk menyediakan referensi skrip yang terstruktur bagi komunitas.
+Repositori ini berisi skrip hasil parser dari aset asli **Tsukihime -A piece of blue glass moon- (TsukiRe)**. Data ini diekstrak dari kontainer **HuneX File Archive (.hfa)** menggunakan metode dekompresi dan decoding yang spesifik untuk format engine HuneX.
 
 ---
 
-## Struktur Data
-Skrip dalam repositori ini telah diproses sehingga memiliki struktur sebagai berikut:
-* **Format:** File teks terstruktur (JSON/YAML/TXT) hasil parsing bytecode asli.
-* **Konten:** Mencakup dialog narasi, pilihan rute (choices), dan tag instruksi engine.
-* **Encoding:** Menggunakan standar UTF-8 untuk mendukung karakter khusus dan kanji Jepang secara akurat.
+## Spesifikasi Teknis Engine (HuneX)
+Skrip dalam repositori ini diproses berdasarkan pemahaman struktur internal HuneX:
+
+* **Archive Utama:** `.hfa` (HuneX File Archive) - Kontainer tanpa kompresi pada level arsip, namun berisi file internal yang terkompresi.
+* **Format Skrip:** `.ctd` (Script Text) - Berisi instruksi bytecode dan string dialog.
+* **Algoritma Kompresi:** **LenZu** (Variasi LZ77 + Huffman, LSB-first). Data skrip dalam repositori ini adalah hasil dekompresi dari format ini sehingga menjadi teks yang dapat dibaca.
 
 ---
 
-## Catatan Teknis
-Harap diperhatikan bahwa skrip ini adalah hasil **Parser**:
-1. **Bukan Plain Text Mentah:** Skrip ini sudah melalui tahap interpretasi bytecode agar tag-tag seperti `[ruby]`, `[voice]`, dan `[wait]` dapat diidentifikasi dengan jelas.
-2. **Sinkronisasi Offset:** Beberapa file mungkin menyertakan alamat memori atau offset asli untuk memudahkan proses injeksi kembali (re-injection) ke dalam file `.crypt` atau `.dat` game.
-3. **Kompatibilitas:** Struktur ini mengikuti format yang digunakan oleh tim Tsukihimates dalam patch bahasa Inggris mereka.
+## Konten Repositori
+Hasil parser ini mencakup:
+* **Dialog & Narasi:** String teks yang sudah didecode dari bytecode `.ctd`.
+* **Identifikasi Tag:** Tag instruksi engine (seperti ruby, voice, dan sinkronisasi teks) yang sudah dipetakan secara jelas.
+* **Metadata Offset:** Informasi alamat memori asli untuk mendukung proses injeksi kembali ke format `.ctd` yang terkompresi.
+
+---
+
+## Informasi Format Aset Lainnya
+Sebagai referensi modding lebih lanjut, engine ini menggunakan format:
+* **.cbg** (Background/UI): Menggunakan filter Huffman + zero-alternate + delta.
+* **.mzp** (Sprite/CG): Menggunakan metode MZX tiles (RLE + LZ + Huffman).
 
 ---
 
 ## Cara Penggunaan
-Bagi modder yang ingin melakukan lokalisasi (misal: Bahasa Indonesia):
-* Gunakan file-file ini sebagai referensi sumber teks.
-* Lakukan proses terjemahan pada bagian dialog tanpa mengubah tag instruksi (seperti `@name`, `@voice`).
-* Gunakan tool re-packer yang kompatibel untuk mengembalikan skrip ke format binari game.
+Bagi modder yang ingin melakukan lokalisasi:
+1. Gunakan teks dalam repositori ini sebagai sumber referensi utama.
+2. Proses translasi dilakukan pada bagian string dialog.
+3. Untuk mengembalikan ke dalam game, teks harus dikompresi kembali menggunakan algoritma **LenZu** dan dimasukkan ke dalam struktur `.ctd`, kemudian dipack ulang ke dalam `.hfa`.
 
 ---
 
 ## Credits
-* **Parser Tool & Data:** [Tsukihimates Team](https://tsukihimates.com/) (Original Parser).
-* **Maintenance:** [Jannabie](https://github.com/Jannabie) (Repository maintainer).
+* **Data Source:** Tsukihimates (Original English Localization Team).
+* **Technical Research:** HuneX Engine reverse-engineering.
+* **Maintenance:** [Jannabie](https://github.com/Jannabie).
 
-**Disclaimer:** *Repositori ini hanya bertujuan untuk riset dan edukasi. Hak cipta konten asli tetap dimiliki oleh TYPE-MOON / ANIPLEX.*
+**Disclaimer:** *Repositori ini hanya bertujuan untuk riset teknis dan edukasi. Seluruh hak cipta konten asli dimiliki oleh TYPE-MOON / ANIPLEX / HuneX.*
